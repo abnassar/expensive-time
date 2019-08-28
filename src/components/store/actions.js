@@ -1,12 +1,13 @@
 import {set} from "idb-keyval"
+import store from "./store"
 const actions = {
-    getTaNaD({commit}){
-        commit("getTaNa");
+    getTaNaD(context){
+        context.commit("getTaNa");
     },
-    deleteAllProjjectAndTasks({commit}) {
+    deleteAllProjjectAndTasks(context) {
         var state = store.state;
         state.allProjects.forEach(project => {
-            commit("deleteProjectTaske", project);
+            context.commit("deleteProjectTaske", project);
         })
         state.allProjects = [];
         set('tasks', state.allOfInformation);
