@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/expensive-time/precache-manifest.985e2100dd379b3be39ac13f2bce9062.js"
+  "/expensive-time/precache-manifest.4cb427dcfb6edb220d7ed59fdc7712c7.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "expensive-time"});
