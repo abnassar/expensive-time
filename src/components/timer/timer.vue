@@ -222,7 +222,7 @@
                 </div>
             </div>
             <div id="informationOfTask">
-                <form v-if="showInformation">
+                <form v-if="showInformation" @submit.prevent="start">
                     <div class="group">
                         <input :class="IsEng" type="text" v-model="taskName" autocomplete="off" required @input="setNa">
                         <span class="highlight"></span>
@@ -244,7 +244,7 @@
                     <br>
                     <router-link to="/projects" id="AddPro">{{_("addAProject")}}</router-link>
                     <br>
-                    <button @click="start" class="btn btn-outline-dark marbut">{{_("start")}}</button>
+                    <button type="submit" class="btn btn-outline-dark marbut">{{_("start")}}</button>
                     <button @click="cancel"  class="btn btn-outline-dark btnCol marbut">{{_("cancel")}}</button>
                 </form>
             </div>
@@ -255,7 +255,6 @@
 <script>
 import { mapState } from 'vuex';
 import {set, get} from "idb-keyval"
-import { setInterval } from 'timers';
 const fmt_time = s => (new Date(s * 1000).toISOString().substr(10, 9)).replace(/T(00:)?/, '');
 
 export default {
@@ -263,7 +262,6 @@ export default {
         return{
             totalSeconds: 0,
             startSwitch: true,
-            stopSwitch: true,
             taskName: "",
             taskDetails: "",
             currentlyOption: "",
@@ -307,7 +305,6 @@ export default {
             set("temDe", this.taskDetails);
         },
         start(){
-            this.stopSwitch = true;
             if (this.startSwitch) {
                 this.totalSeconds ++;
                 this.showTimer = true;
@@ -318,30 +315,30 @@ export default {
                     taske: this.showTaskslocal,
                     information: this.showInformationLocal
                 });
-                setInterval(() => {
-                    if(this.stopSwitch)
+                this.interval = setInterval(() => {
                         this.totalSeconds++;
                 }, 1000);
             }
         },
         stop(){
-            this.stopSwitch = false;
-            this.startSwitch = true;
             this.togglButton = false;
+            clearInterval(this.interval)
         },
         continuee(){
-            this.start();
             this.togglButton = true;
+            this.startSwitch = true;
+            this.start();
         },
         finish(){
             if (this.totalSeconds) {
                 this.addFunction();
                 this.totalSeconds = 0;
                 this.currentlyOption = "";
-                this.stopSwitch = false;
                 this.startSwitch = true;
                 this.togglButton = true;
             }
+            this.showTimer = false;
+            clearInterval(this.interval)
         },
         addFunction() {
             if (!this.timer_display)
@@ -363,7 +360,6 @@ export default {
             this.taskDetails = "";
             set("temNa", this.taskName);
             set("temDe", this.taskDetails);
-            this.stopSwitch = false;
             this.currentlyOption = "";
             this.showTaskslocal = true;
             this.togglButton = true;
@@ -372,6 +368,8 @@ export default {
                 taske: this.showTaskslocal,
                 information: this.showInformationLocal
             });
+            this.showTimer = false;
+            clearInterval(this.interval)
         },
     },
     watch: {
