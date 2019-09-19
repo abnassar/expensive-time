@@ -24,7 +24,7 @@ self.__precacheManifest = [
     "url": "/expensive-time/robots.txt"
   },
   {
-    "revision": "e8e4d9e04f115e4db44630b53d52e910",
+    "revision": "b8883322f31aa1977e76702d3233c845",
     "url": "/expensive-time/Capture2.JPG"
   }
 ];
